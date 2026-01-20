@@ -1,15 +1,18 @@
-# Виртуальное окружение
-.venv/
-venv/
-ENV/
-
-# Кэш Python
-**/__pycache__/
+# Python
+__pycache__/
 *.py[cod]
+*$py.class
+.venv/
+dist/
+build/
 
-# Секретные данные (Токены, ключи)
+# Окружение (СЕКРЕТЫ)
 .env
+.env.*
+!.env.example
 
-# Файлы настроек IDE
-.vscode/
-.idea/
+# Инструменты
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
