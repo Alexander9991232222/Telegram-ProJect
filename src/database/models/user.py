@@ -9,7 +9,7 @@ from src.database.models.base import Base
 class User(Base):
     __tablename__ = "user"
 
-    user_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     chat_id: Mapped[int] = mapped_column(BigInteger)
     user_name: Mapped[str] = mapped_column(String, nullable=False)
     first_name: Mapped[str] = mapped_column(String)

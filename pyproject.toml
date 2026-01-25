@@ -32,3 +32,9 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 
 addopts = "--cov=src"
+
+[tool.coverage.report]
+omit = [
+    "**/__init__.py",
+    "src/main.py"
+]

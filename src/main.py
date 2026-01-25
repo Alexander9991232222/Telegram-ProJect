@@ -11,12 +11,12 @@ def main():
 
     with db_manager.get_session() as session:
         test_id = 77
-        query = select(User).filter_by(user_id=test_id)
+        query = select(User).filter_by(id=test_id)
         user = session.execute(query).scalar_one_or_none()
 
         if user is None:
             user = User(
-                user_id=test_id,
+                id=test_id,
                 chat_id=test_id,
                 user_name=f"test_{test_id}",
                 first_name=f"test_{test_id}",

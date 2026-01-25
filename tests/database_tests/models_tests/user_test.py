@@ -13,7 +13,7 @@ def test_user_column_definition():
     mapper = inspect(User)
     columns = [column.key for column in mapper.attrs]
 
-    assert "user_id" in columns
+    assert "id" in columns
     assert "chat_id" in columns
     assert "user_name" in columns
     assert "first_name" in columns
@@ -22,7 +22,7 @@ def test_user_column_definition():
 
 def test_user_id_is_primary_key():
     mapper = inspect(User)
-    assert mapper.primary_key[0].name == "user_id"
+    assert mapper.primary_key[0].name == "id"
 
 
 def test_create_user_missing_required_fields(temp_db):
