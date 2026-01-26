@@ -15,19 +15,22 @@ Telegram-бот для управління завданнями, розклад
 
 ```text
 Telegram-ProJect/
+├── db/
+│   └── database.db         # Файл бази даних SQLite
 ├── src/
 │   ├── bot/
-│   │   ├── handlers/       # Логіка обробки повідомлень та кнопок
-│   │   ├── keyboards/      # Скрипти для Reply та Inline клавіатур
-│   │   └── states/         # Опис станів для FSM (машини станів)
+│   │   ├── handlers/       # Обробники (start.py, main_keyboard_callback.py)
+│   │   └── keyboards/      # Клавіатури (main_keyboard.py)
 │   ├── database/
-│   │   ├── models/         # SQLAlchemy моделі (таблиці БД)
-│   │   └── db_manager.py   # Ініціалізація двигуна та сесій БД
-│   ├── config.py           # Налаштування та завантаження .env
-│   └── main.py             # Точка входу: запуск бота
-├── .env                    # Токен бота та секретні дані
-├── .gitignore              # Файли, що ігноруються Git
-├── database.db             # Файл бази даних SQLite
+│   │   ├── models/         # Моделі БД (base.py, user.py)
+│   │   ├── repositories/   # Репозиторії (user_repository.py)
+│   │   └── db_manager.py   # Налаштування підключення до БД
+│   ├── models/             # (Дублікат, потребує очищення)
+│   ├── services/           # Бізнес-логіка бота
+│   ├── config.py           # Конфігурація та токен
+│   └── main.py             # Точка входу (запуск бота)
+├── .env                    # Секретні змінні оточення
+├── .gitignore              # Ігноровані файли
 ├── pyproject.toml          # Залежності проекту (uv)
 └── README.md               # Документація проекту
 ```
