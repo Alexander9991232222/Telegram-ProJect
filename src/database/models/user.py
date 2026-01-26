@@ -11,6 +11,6 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     chat_id: Mapped[int] = mapped_column(BigInteger)
-    user_name: Mapped[str] = mapped_column(String, nullable=False)
+    user_name: Mapped[str | None] = mapped_column(String, nullable=True)
     first_name: Mapped[str] = mapped_column(String)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())

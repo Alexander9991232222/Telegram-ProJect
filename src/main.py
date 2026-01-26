@@ -1,32 +1,46 @@
-from sqlalchemy import select
+import asyncio
+import logging
 
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+
+from src.bot.handlers import main_callback_router, start_router
+from src.config import settings
 from src.database import db_manager
-from src.database.models import User
+from src.database.models.base import Base
 
 
-def main():
-    print("Initializing database...")
-    db_manager.init_db()
-    print("Database initialized")
+async def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
 
-    with db_manager.get_session() as session:
-        test_id = 77
-        query = select(User).filter_by(id=test_id)
-        user = session.execute(query).scalar_one_or_none()
+    logging.info("Initializing database")
+    engine = db_manager.engine
+    Base.metadata.create_all(engine)
+    logging.info("Database initialized")
 
-        if user is None:
-            user = User(
-                id=test_id,
-                chat_id=test_id,
-                user_name=f"test_{test_id}",
-                first_name=f"test_{test_id}",
-            )
-            session.add(user)
-            session.commit()
-            print(f"User with id {test_id} added")
-        else:
-            print(f"User with id {test_id} already exists")
+    bot = Bot(
+        token=settings.bot_token.get_secret_value(),
+        default=DefaultBotProperties(parse_mode="HTML"),
+    )
+
+    dp = Dispatcher()
+    dp.include_router(start_router)
+    dp.include_router(main_callback_router)
+    dp["db_manager"] = db_manager
+
+    logging.info("Starting bot")
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await bot.session.close()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        logging.error("Bot stopped by user")
