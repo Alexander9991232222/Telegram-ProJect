@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 
-from src.bot.handlers import main_callback_router, start_router, calendar_router
+from src.bot.handlers import calendar_router, main_callback_router, start_router
 from src.config import settings
 from src.database import db_manager
 from src.database.models.base import Base
