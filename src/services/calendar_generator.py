@@ -80,10 +80,10 @@ def _generate_days_in_month_buttons(
             if day == 0:
                 days_buttons.append(
                     CalendarButtonModel(
-                        id="ignore_button",
+                        id="ignore_button_{row}_{col}",
                         col=col,
-                        row=row,
-                        text="",
+                        row=row + 2,
+                        text=" ",
                         action=CalendarActions.IGNORE,
                         callback_data="ignore",
                     )
@@ -95,17 +95,17 @@ def _generate_days_in_month_buttons(
                         text=str(day),
                         action=CalendarActions.DAY,
                         col=col,
-                        row=row,
+                        row=row + 2,
                         callback_data=f"cal_day:{day:02d}-{month:02d}-{year}",
                     )
                 )
         days_buttons.append(
             CalendarButtonModel(
                 id=f"{row}-{month:02d}-{year}",
-                text=f"{row}н",
+                text=f"{row + 1}н",
                 action=CalendarActions.ROW,
-                row=row,
-                col=6,
+                row=row + 1,
+                col=7,
                 callback_data=f"cal_week_days:{row}-{month:02d}-{year}",
             )
         )
@@ -125,6 +125,7 @@ def _get_weeks_in_year(year: int, month: int) -> list[list[int]]:
 
 def _get_name_month_by_index(month_index: int) -> str:
     return [
+        "",
         "Січень",
         "Лютий",
         "Березень",

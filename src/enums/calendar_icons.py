@@ -1,7 +1,7 @@
-from enum import Enum
+from src.enums import BaseStrEnum
 
 
-class CalendarIcons(str, Enum):
+class CalendarIcons(BaseStrEnum):
     SELECTED = "✅"
     NAV_BACK = "⬅️"
     NAV_NEXT = "➡️"

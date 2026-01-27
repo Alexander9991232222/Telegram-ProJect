@@ -1,7 +1,7 @@
-from enum import Enum
+from src.enums import BaseStrEnum
 
 
-class MainMenuIcons(str, Enum):
+class MainMenuIcons(BaseStrEnum):
     CALENDAR = "🗓️"
     ADD_TASK = "➕"
     REMINDER = "⏰"

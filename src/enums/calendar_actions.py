@@ -1,7 +1,7 @@
-from enum import Enum
+from src.enums import BaseStrEnum
 
 
-class CalendarActions(str, Enum):
+class CalendarActions(BaseStrEnum):
     DAY = "day"
     COL = "col"
     ROW = "row"
