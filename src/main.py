@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 
-from src.bot.handlers import main_callback_router, start_router
+from src.bot.handlers import main_callback_router, start_router, calendar_router
 from src.config import settings
 from src.database import db_manager
 from src.database.models.base import Base
@@ -30,6 +30,7 @@ async def main():
     dp = Dispatcher()
     dp.include_router(start_router)
     dp.include_router(main_callback_router)
+    dp.include_router(calendar_router)
     dp["db_manager"] = db_manager
 
     logging.info("Starting bot")

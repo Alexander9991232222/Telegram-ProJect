@@ -1,12 +1,17 @@
 from aiogram import F, Router, types
 from aiogram.types import ReplyKeyboardRemove
 
+from src.bot.keyboards.calendar_kb import get_multi_calendar
+
 main_callback_router = Router()
 
 
 @main_callback_router.message(F.text == "📅 Календар")
 async def show_calendar(message: types.Message):
-    await show_message(message, "Календар")
+    await message.answer(
+        "Оберіть дату:",
+        reply_markup=get_multi_calendar(),
+    )
 
 
 @main_callback_router.message(F.text == "➕ Додавання завдання")
