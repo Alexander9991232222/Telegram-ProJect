@@ -7,7 +7,7 @@ from src.database.models import Base
 
 
 @pytest.fixture
-def temp_db():
+def temp_db() -> DBManager:
     manager = DBManager()
     manager.engine = create_engine("sqlite:///:memory:")
     Base.metadata.create_all(manager.engine)

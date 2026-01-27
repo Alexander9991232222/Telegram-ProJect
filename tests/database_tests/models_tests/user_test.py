@@ -2,14 +2,15 @@ import pytest
 from sqlalchemy import inspect
 from sqlalchemy.exc import IntegrityError
 
+from src.database.db_manager import DBManager
 from src.database.models import Base, User
 
 
-def test_user_model_registration():
+def test_user_model_registration() -> None:
     assert "user" in Base.metadata.tables
 
 
-def test_user_column_definition():
+def test_user_column_definition() -> None:
     mapper = inspect(User)
     columns = [column.key for column in mapper.attrs]
 
@@ -20,12 +21,12 @@ def test_user_column_definition():
     assert "created_at" in columns
 
 
-def test_user_id_is_primary_key():
+def test_user_id_is_primary_key() -> None:
     mapper = inspect(User)
     assert mapper.primary_key[0].name == "id"
 
 
-def test_create_user_missing_required_fields(temp_db):
+def test_create_user_missing_required_fields(temp_db: DBManager) -> None:
     temp_db.init_db()
 
     with temp_db.get_session() as session:

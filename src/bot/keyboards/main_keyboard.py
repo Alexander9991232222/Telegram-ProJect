@@ -1,15 +1,17 @@
-from aiogram.types import KeyboardButton
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
+from src.enums.main_menu_icons import MainMenuIcons
 
-def get_main_keyboard():
+
+def get_main_keyboard() -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
 
     builder.add(
-        KeyboardButton(text="📅 Календар"),
-        KeyboardButton(text="➕ Додавання завдання"),
-        KeyboardButton(text="🔔 Нагадування"),
-        KeyboardButton(text="📋 Розклад дня"),
+        KeyboardButton(text=f"{MainMenuIcons.CALENDAR} Календар"),
+        KeyboardButton(text=f"{MainMenuIcons.ADD_TASK} Додавання завдання"),
+        KeyboardButton(text=f"{MainMenuIcons.REMINDER} Нагадування"),
+        KeyboardButton(text=f"{MainMenuIcons.SHEDULE} Розклад дня"),
     )
     builder.adjust(1)
 

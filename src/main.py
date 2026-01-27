@@ -10,7 +10,7 @@ from src.database import db_manager
 from src.database.models.base import Base
 
 
-async def main():
+async def main() -> None:
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",

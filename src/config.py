@@ -1,14 +1,14 @@
 import os
 from pathlib import Path
 
-from pydantic import SecretStr, ValidationError
+from pydantic import Field, SecretStr, ValidationError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 class Settings(BaseSettings):
-    bot_token: SecretStr
+    bot_token: SecretStr = Field(default=...)
     db_path: str = os.path.join(BASE_DIR, "db", "database.db")
 
     model_config = SettingsConfigDict(

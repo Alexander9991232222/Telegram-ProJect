@@ -9,7 +9,10 @@ start_router = Router()
 
 
 @start_router.message(CommandStart())
-async def start(message: types.Message, db_manager: DBManager):
+async def start(message: types.Message, db_manager: DBManager) -> None:
+    if message.from_user is None:
+        return
+
     with db_manager.get_session() as session:
         repo = UserRepository(session)
         user = repo.get_by_id(message.from_user.id)
