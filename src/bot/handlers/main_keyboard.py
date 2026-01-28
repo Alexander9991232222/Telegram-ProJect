@@ -20,6 +20,7 @@ async def show_calendar(message: types.Message, state: FSMContext) -> None:
     data: dict[str, Any] = {
         "current_year": current_year,
         "current_month": current_month,
+        "selected_days": [],
     }
 
     await state.update_data(data=data)

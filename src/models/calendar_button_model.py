@@ -21,28 +21,10 @@ class CalendarButtonModel:
         is_selected: bool = False,
     ) -> None:
         self.id = id
-        self.text = text
         self.col = col
-        self.row = row
         self.is_selected = is_selected
+        self.row = row
         self.callback_data = callback_data
         self.action = action
 
-    def set_selected(self, is_selected: bool) -> None:
-        noChangeAction: list[CalendarActions] = [
-            CalendarActions.IGNORE,
-            CalendarActions.MONTH,
-            CalendarActions.CONFIRM,
-            CalendarActions.PREV,
-            CalendarActions.NEXT,
-        ]
-
-        if self.action in noChangeAction:
-            return
-
-        self.is_selected = is_selected
-        self.text = (
-            f"{CalendarIcons.SELECTED} {self.text}"
-            if is_selected
-            else self.text.replace(CalendarIcons.SELECTED, CalendarIcons.EMPTY)
-        )
+        self.text = f"{CalendarIcons.SELECTED}" if is_selected else text

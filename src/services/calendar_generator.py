@@ -4,12 +4,16 @@ from src.enums import CalendarActions, CalendarIcons
 from src.models.calendar_button_model import CalendarButtonModel
 
 
-def generate_calendar(year: int, month: int) -> list[list[CalendarButtonModel]]:
+def generate_calendar(
+    year: int, month: int, selected_days: list[str] | None = None
+) -> list[list[CalendarButtonModel]]:
+    selected_days = selected_days or []
     result: list[list[CalendarButtonModel]] = []
 
     result.append(_generate_navigation_buttons(year, month))
-    result.append(_generate_days_buttons(year, month))
-    result = result + _generate_days_in_month_buttons(year, month)
+    result.append(_generate_days_buttons(year, month, selected_days))
+    result = result + _generate_days_in_month_buttons(year, month, selected_days)
+    result.append([_generate_confirmation_button()])
 
     return result
 
@@ -28,7 +32,7 @@ def _generate_navigation_buttons(year: int, month: int) -> list[CalendarButtonMo
         id="cal_month_button",
         row=0,
         col=1,
-        text=_get_name_month_by_index(month),
+        text=f"{_get_name_month_by_index(month)} {year}",
         action=CalendarActions.MONTH,
         callback_data=f"month:{month:02d}-{year}",
     )
@@ -45,19 +49,24 @@ def _generate_navigation_buttons(year: int, month: int) -> list[CalendarButtonMo
     return [previos_month_button, month_button, next_month_button]
 
 
-def _generate_days_buttons(year: int, month: int) -> list[CalendarButtonModel]:
+def _generate_days_buttons(
+    year: int, month: int, selected_days: list[str]
+) -> list[CalendarButtonModel]:
     return [
         CalendarButtonModel(
-            id=f"{i}-{month:02d}-{year}",
+            id=f"weekday_header_{i}-{month:02d}-{year}",
             text=day,
             row=1,
             col=i,
             action=CalendarActions.COL,
+            is_selected=_check_all_days_selected_in_month(
+                year, month, selected_days, i
+            ),
             callback_data=f"cal_days_in_month:{i}-{month:02d}-{year}",
         )
         if day != " "
         else CalendarButtonModel(
-            id="ignore_button",
+            id=f"empty_header_{month:02d}-{year}",
             row=1,
             col=i,
             text=day,
@@ -69,7 +78,7 @@ def _generate_days_buttons(year: int, month: int) -> list[CalendarButtonModel]:
 
 
 def _generate_days_in_month_buttons(
-    year: int, month: int
+    year: int, month: int, selected_days: list[str]
 ) -> list[list[CalendarButtonModel]]:
     result: list[list[CalendarButtonModel]] = []
 
@@ -89,14 +98,17 @@ def _generate_days_in_month_buttons(
                     )
                 )
             else:
+                id = f"{day:02d}-{month:02d}-{year}"
+
                 days_buttons.append(
                     CalendarButtonModel(
-                        id=f"{day:02d}-{month:02d}-{year}",
+                        id=id,
                         text=str(day),
                         action=CalendarActions.DAY,
                         col=col,
                         row=row + 2,
-                        callback_data=f"cal_day:{day:02d}-{month:02d}-{year}",
+                        callback_data=f"cal_day:{id}",
+                        is_selected=f"{id}" in selected_days,
                     )
                 )
         days_buttons.append(
@@ -107,12 +119,38 @@ def _generate_days_in_month_buttons(
                 row=row + 1,
                 col=7,
                 callback_data=f"cal_week_days:{row}-{month:02d}-{year}",
+                is_selected=all(buttons.is_selected for buttons in days_buttons),
             )
         )
 
         result.append(days_buttons)
 
     return result
+
+
+def _generate_confirmation_button() -> CalendarButtonModel:
+    return CalendarButtonModel(
+        id="confirmation_button",
+        text="Підтвердити",
+        action=CalendarActions.IGNORE,
+        callback_data="cal_confirm_callback",
+        col=0,
+        row=8,
+    )
+
+
+def _check_all_days_selected_in_month(
+    year: int, month: int, selected_days: list[str], col: int
+) -> bool:
+    month_calendar = _get_weeks_in_year(year, month)
+
+    result = [
+        f"{day:02d}-{month:02d}-{year}"
+        for week in month_calendar
+        if (day := week[col]) > 0
+    ]
+
+    return all(day in selected_days for day in result)
 
 
 def _get_days_in_week() -> list[str]:
