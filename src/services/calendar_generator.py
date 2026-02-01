@@ -12,7 +12,7 @@ def generate_calendar(
 
     result.append(_generate_navigation_buttons(year, month))
     result.append(_generate_days_buttons(year, month, selected_days))
-    result = result + _generate_days_in_month_buttons(year, month, selected_days)
+    result = result + _generate_weeks_month_buttons(year, month, selected_days)
     result.append([_generate_confirmation_button()])
 
     return result
@@ -66,7 +66,7 @@ def _generate_days_buttons(
         )
         if day != " "
         else CalendarButtonModel(
-            id=f"empty_header_{month:02d}-{year}",
+            id=f"empty_header_{i}-{month:02d}-{year}",
             row=1,
             col=i,
             text=day,
@@ -77,7 +77,7 @@ def _generate_days_buttons(
     ]
 
 
-def _generate_days_in_month_buttons(
+def _generate_weeks_month_buttons(
     year: int, month: int, selected_days: list[str]
 ) -> list[list[CalendarButtonModel]]:
     result: list[list[CalendarButtonModel]] = []
@@ -162,7 +162,7 @@ def _get_weeks_in_year(year: int, month: int) -> list[list[int]]:
 
 
 def _get_name_month_by_index(month_index: int) -> str:
-    return [
+    months = [
         "",
         "Січень",
         "Лютий",
@@ -176,4 +176,9 @@ def _get_name_month_by_index(month_index: int) -> str:
         "Жовтень",
         "Листопад",
         "Грудень",
-    ][month_index]
+    ]
+
+    if 1 <= month_index <= 12:
+        return months[month_index]
+
+    return ""

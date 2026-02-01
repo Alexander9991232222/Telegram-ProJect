@@ -1,6 +1,9 @@
+from dataclasses import dataclass
+
 from src.enums import CalendarActions, CalendarIcons
 
 
+@dataclass
 class CalendarButtonModel:
     text: str
     col: int

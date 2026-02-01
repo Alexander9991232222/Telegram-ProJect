@@ -14,7 +14,7 @@ calendar_router = Router()
 async def calendar_day_callback_handler(
     callback: CallbackQuery, state: FSMContext
 ) -> None:
-    if not callback.data:
+    if not callback.data or not isinstance(callback.message, Message):
         return
 
     selected_day_id: str = callback.data.split(":")[1]
@@ -31,10 +31,9 @@ async def calendar_day_callback_handler(
 
     await state.update_data(selected_days=selected_days)
 
-    if isinstance(callback.message, Message):
-        await callback.message.edit_reply_markup(
-            reply_markup=get_multi_calendar(current_year, current_month, selected_days),
-        )
+    await callback.message.edit_reply_markup(
+        reply_markup=get_multi_calendar(current_year, current_month, selected_days),
+    )
 
     await callback.answer()
 
@@ -55,7 +54,7 @@ async def calendar_mass_selection_handler(
 
     data = await state.get_data()
     selected_days: list[str] = data.get("selected_days", [])
-    month_calendar = calendar.monthcalendar(year, month)
+    month_calendar: list[list[int]] = calendar.monthcalendar(year, month)
 
     if prefix == "cal_days_in_month":
         target_days = [
