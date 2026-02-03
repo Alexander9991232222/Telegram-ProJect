@@ -1,7 +1,7 @@
 from aiogram import Router, types
 from aiogram.filters import CommandStart
 
-from src.bot.keyboards.main_keyboard import get_main_keyboard
+from src.bot.keyboards.main_kd import get_main_keyboard
 from src.database.db_manager import DBManager
 from src.database.repositories.user_repository import UserRepository
 
