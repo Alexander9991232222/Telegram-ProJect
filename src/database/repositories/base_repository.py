@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Generic, TypeVar, cast
 
-from sqlalchemy import ColumnElement, select
+from sqlalchemy.sql.expression import ColumnElement, select
 from sqlalchemy.orm import Session
 
 from src.database.models import Base
